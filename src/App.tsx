@@ -13,7 +13,7 @@ export default function App() {
   const [error, setError] = React.useState("");
 
   // It will store the file uploaded by the user
-  const [file, setFile] = React.useState("");
+  const [file, setFile] = React.useState<any>("");
   const [loading, setLoading] = React.useState(false);
 
   const onChangeAppId = (e) => {
@@ -57,26 +57,28 @@ export default function App() {
       // Event listener on reader when the file
       // loads, we parse it and set the data.
       reader.onload = async ({ target }) => {
-        const csv = Papa.parse(target.result, {
-          header: true,
-        });
+        if (target) {
+          const csv = Papa.parse(target?.result as any, {
+            header: true,
+          });
 
-        const parsedData = csv?.data;
+          const parsedData = csv?.data as any;
 
-        if (parsedData) {
-          const options = {
-            method: "DELETE",
-            headers: { accept: "application/json" },
-          };
-          for (let i = 0; i < parsedData.length; i++) {
-            const url = `https://api.onesignal.com/apps/${appId}/subscriptions/${parsedData[i].player_id}`;
-            await fetch(url, options)
-              .then((res) => res.json())
-              .then((json) => console.log(json));
+          if (parsedData) {
+            const options = {
+              method: "DELETE",
+              headers: { accept: "application/json" },
+            };
+            for (let i = 0; i < parsedData.length; i++) {
+              const url = `https://api.onesignal.com/apps/${appId}/subscriptions/${parsedData[i].player_id}`;
+              await fetch(url, options)
+                .then((res) => res.json())
+                .then((json) => console.log(json));
+            }
           }
         }
+        reader.readAsText(file);
       };
-      reader.readAsText(file);
     } catch (error) {
       error && setError(error.toString());
     } finally {

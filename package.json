@@ -8,6 +8,7 @@
     "subscription"
   ],
   "author": "Yosafat Kesuma (da005kage@gmail.com)",
+  "homepage": "https://yosafatkesuma.github.io/onesignal-remove-subscriptions",
   "dependencies": {
     "@stitches/react": "1.2.8",
     "@types/papaparse": "5.3.14",
